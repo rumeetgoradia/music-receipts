@@ -6,10 +6,12 @@ import { z } from "zod";
  * This way you can ensure the app isn't built with invalid env vars.
  */
 export const serverSchema = z.object({
+	NODE_ENV: z.enum(["development", "test", "production"]),
 	NEXTAUTH_SECRET: z.string(),
 	NEXTAUTH_URL: z.string().url(),
 	SPOTIFY_CLIENT_ID: z.string(),
 	SPOTIFY_CLIENT_SECRET: z.string(),
+	SPOTIFY_REFRESH_TOKEN: z.string(),
 });
 
 /**

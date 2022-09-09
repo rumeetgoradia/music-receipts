@@ -1,3 +1,3 @@
-export const SITE_NAME = "rgMealPlanner";
-export const SITE_URL = "https://meal-planner.rumeetgoradia.com";
-export const SITE_DESCRIPTION = "Meal Planner by Rumeet Goradia.";
+export const SITE_NAME = "Music Receipts";
+export const SITE_URL = "https://music-receipts.rumeetgoradia.com";
+export const SITE_DESCRIPTION = "Music Receipts by Rumeet Goradia.";

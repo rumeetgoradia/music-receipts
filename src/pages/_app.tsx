@@ -1,5 +1,6 @@
 // src/pages/_app.tsx
 import { Chakra } from "@/components/Chakra";
+import type { AppRouter } from "@/server/router";
 import "@/styles/globals.css";
 import theme, { Fonts } from "@/styles/theme";
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
@@ -10,7 +11,6 @@ import { DefaultSeo } from "next-seo";
 import SeoProps from "next-seo.config";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
-import type { AppRouter } from "../server/router";
 
 const MyApp: AppType = ({
 	Component,
