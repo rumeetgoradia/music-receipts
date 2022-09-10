@@ -1,47 +1,42 @@
-const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
+import { z } from "zod";
+
 const TOP_ENDPOINT = "https://api.spotify.com/v1/me/top";
+const DEFAULT_LIMIT = 10;
+const DEFAULT_TIME_RANGE: TimeRangeEnum = "medium";
 
-// export const getAccessToken = async (
-// 	refreshToken: string
-// ): Promise<{ access_token: string }> => {
-// 	const refresh_token = refreshToken;
-
-// 	const response = await fetch(TOKEN_ENDPOINT, {
-// 		method: "POST",
-// 		headers: {
-// 			Authorization: `Basic ${Buffer.from(
-// 				`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`
-// 			).toString("base64")}`,
-// 			"Content-Type": "application/x-www-form-urlencoded",
-// 		},
-// 		body: new URLSearchParams({
-// 			grant_type: "refresh_token",
-// 			refresh_token,
-// 		}),
-// 	});
-
-// 	return response.json();
-// };
-
-export const getTopTracks = async (accessToken: string, limit?: number) => {
-	return getTopItems(accessToken, "tracks", limit);
+export const getTopTracks = async (props: SpotifyTop) => {
+	return getTopItems({ ...props, itemType: "tracks" });
 };
 
-export const getTopArtists = async (accessToken: string, limit?: number) => {
-	return getTopItems(accessToken, "artists", limit);
+export const getTopArtists = async (props: SpotifyTop) => {
+	return getTopItems({ ...props, itemType: "artists" });
 };
 
-const getTopItems = async (
-	accessToken: string,
-	itemType: "tracks" | "artists",
-	limit?: number
-) => {
-	const access_token = accessToken;
-	const limitQuery = `?limit=${limit || 10}`;
+const getTopItems = async ({
+	accessToken,
+	limit,
+	timeRange,
+	itemType,
+}: SpotifyTop & { itemType: "tracks" | "artists" }) => {
+	const limitQuery = `?limit=${limit || DEFAULT_LIMIT}`;
+	const timeRangeQuery = `&time_range=${timeRange || DEFAULT_TIME_RANGE}_term`;
 
-	return fetch(`${TOP_ENDPOINT}/${itemType}${limitQuery}`, {
+	const url = `${TOP_ENDPOINT}/${itemType}${limitQuery}${timeRangeQuery}`;
+
+	return await fetch(url, {
 		headers: {
-			Authorization: `Bearer ${access_token}`,
+			Authorization: `Bearer ${accessToken}`,
 		},
 	});
 };
+
+export const TimeRangeEnum = z.enum(["short", "medium", "long"]);
+export type TimeRangeEnum = z.infer<typeof TimeRangeEnum>;
+
+export const SpotifyTop = z.object({
+	accessToken: z.string(),
+	limit: z.number().min(1).max(50).default(DEFAULT_LIMIT).optional(),
+	timeRange: TimeRangeEnum.default(DEFAULT_TIME_RANGE).optional(),
+});
+
+export type SpotifyTop = z.infer<typeof SpotifyTop>;

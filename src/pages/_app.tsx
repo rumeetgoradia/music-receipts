@@ -1,5 +1,7 @@
 // src/pages/_app.tsx
 import { Chakra } from "@/components/Chakra";
+import { Footer } from "@/components/Footer";
+import { Navbar } from "@/components/Navbar";
 import type { AppRouter } from "@/server/router";
 import "@/styles/globals.css";
 import theme, { Fonts } from "@/styles/theme";
@@ -21,7 +23,9 @@ const MyApp: AppType = ({
 			<DefaultSeo {...SeoProps} />
 			<Chakra cookies={pageProps.cookies} theme={theme}>
 				<Fonts />
+				<Navbar />
 				<Component {...pageProps} />
+				<Footer />
 			</Chakra>
 		</SessionProvider>
 	);

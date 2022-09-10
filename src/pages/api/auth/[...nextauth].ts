@@ -9,7 +9,7 @@ const SPOTIFY_AUTHORIZATION_URL =
 		scope: "user-read-email,user-read-private,user-top-read",
 	});
 
-const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
+const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token?";
 
 /**
  * Takes a token, and returns a new token with updated
@@ -19,7 +19,7 @@ const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 async function refreshAccessToken(token: JWT) {
 	try {
 		const url =
-			"https://accounts.spotify.com/api/token?" +
+			TOKEN_ENDPOINT +
 			new URLSearchParams({
 				client_id: env.SPOTIFY_CLIENT_ID,
 				client_secret: env.SPOTIFY_CLIENT_SECRET,
