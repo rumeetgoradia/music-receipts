@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
 			if (account && user) {
 				const accountExpiresAt = account.expires_at
 					? account.expires_at * 1000
-					: 30 * 24 * 60 * 60 * 1000;
+					: 3600;
 				return {
 					accessToken: account.access_token,
 					accessTokenExpires: Date.now() + accountExpiresAt,

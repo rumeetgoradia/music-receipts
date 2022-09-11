@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 const TOP_ENDPOINT = "https://api.spotify.com/v1/me/top";
-const DEFAULT_LIMIT = 10;
-const DEFAULT_TIME_RANGE: TimeRangeEnum = "medium";
+export const DEFAULT_LIMIT = 10;
+export const DEFAULT_TIME_RANGE: TimeRange = "medium";
 
-export const getTopTracks = async (props: SpotifyTop) => {
+export const getTopTracks = async (props: SpotifyTopWithAccessToken) => {
 	return getTopItems({ ...props, itemType: "tracks" });
 };
 
-export const getTopArtists = async (props: SpotifyTop) => {
+export const getTopArtists = async (props: SpotifyTopWithAccessToken) => {
 	return getTopItems({ ...props, itemType: "artists" });
 };
 
@@ -17,7 +17,7 @@ const getTopItems = async ({
 	limit,
 	timeRange,
 	itemType,
-}: SpotifyTop & { itemType: "tracks" | "artists" }) => {
+}: SpotifyTopWithAccessToken & { itemType: "tracks" | "artists" }) => {
 	const limitQuery = `?limit=${limit || DEFAULT_LIMIT}`;
 	const timeRangeQuery = `&time_range=${timeRange || DEFAULT_TIME_RANGE}_term`;
 
@@ -30,13 +30,18 @@ const getTopItems = async ({
 	});
 };
 
-export const TimeRangeEnum = z.enum(["short", "medium", "long"]);
-export type TimeRangeEnum = z.infer<typeof TimeRangeEnum>;
+export const TimeRange = z.enum(["short", "medium", "long"]);
+export type TimeRange = z.infer<typeof TimeRange>;
 
 export const SpotifyTop = z.object({
-	accessToken: z.string(),
 	limit: z.number().min(1).max(50).default(DEFAULT_LIMIT).optional(),
-	timeRange: TimeRangeEnum.default(DEFAULT_TIME_RANGE).optional(),
+	timeRange: TimeRange.default(DEFAULT_TIME_RANGE).optional(),
 });
+export const SpotifyTopWithAccessToken = z
+	.object({ accessToken: z.string() })
+	.merge(SpotifyTop);
 
 export type SpotifyTop = z.infer<typeof SpotifyTop>;
+export type SpotifyTopWithAccessToken = z.infer<
+	typeof SpotifyTopWithAccessToken
+>;

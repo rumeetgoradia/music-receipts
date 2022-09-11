@@ -26,8 +26,7 @@ const ViewSelector: React.FC<ViewSelectorProps> = ({
 					color={currentView === view ? "brand.900" : "white"}
 					textTransform="uppercase"
 					textAlign="center"
-					letterSpacing={1}
-					fontSize="lg"
+					letterSpacing={2}
 				>
 					{view}
 				</Box>

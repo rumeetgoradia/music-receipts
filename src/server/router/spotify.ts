@@ -5,7 +5,7 @@ import { createProtectedRouter } from "./context";
 
 export const spotifyRouter = createProtectedRouter()
 	.query("getTopTracks", {
-		input: SpotifyTop.omit({ accessToken: true }),
+		input: SpotifyTop,
 		async resolve({ ctx, input }) {
 			const {
 				token: { accessToken },
@@ -25,12 +25,12 @@ export const spotifyRouter = createProtectedRouter()
 				return items as Track[];
 			} catch (e) {
 				console.log(e);
-				return [];
+				return undefined;
 			}
 		},
 	})
 	.query("getTopArtists", {
-		input: SpotifyTop.omit({ accessToken: true }),
+		input: SpotifyTop,
 		async resolve({ ctx, input }) {
 			const {
 				token: { accessToken },
@@ -50,7 +50,7 @@ export const spotifyRouter = createProtectedRouter()
 				return items as Artist[];
 			} catch (e) {
 				console.log(e);
-				return [];
+				return undefined;
 			}
 		},
 	});
