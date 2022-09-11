@@ -1,10 +1,11 @@
 import { getTopArtists, getTopTracks, SpotifyTop } from "@/lib/spotify";
+import { TRPCError } from "@trpc/server";
 import { Artist, Track } from "spotify-web-api-ts/types/types/SpotifyObjects";
 import { createProtectedRouter } from "./context";
 
 export const spotifyRouter = createProtectedRouter()
 	.query("getTopTracks", {
-		input: SpotifyTop.omit({ accessToken: true }),
+		input: SpotifyTop,
 		async resolve({ ctx, input }) {
 			const {
 				token: { accessToken },
@@ -12,17 +13,24 @@ export const spotifyRouter = createProtectedRouter()
 
 			try {
 				const response = await getTopTracks({ accessToken, ...input });
+				if (!response.ok) {
+					throw new TRPCError({
+						message: `Got ${response.status} response`,
+						code: "INTERNAL_SERVER_ERROR",
+					});
+				}
+
 				const { items } = await response.json();
 
 				return items as Track[];
 			} catch (e) {
-				console.log("error", e);
-				return [];
+				console.log(e);
+				return undefined;
 			}
 		},
 	})
 	.query("getTopArtists", {
-		input: SpotifyTop.omit({ accessToken: true }),
+		input: SpotifyTop,
 		async resolve({ ctx, input }) {
 			const {
 				token: { accessToken },
@@ -30,11 +38,19 @@ export const spotifyRouter = createProtectedRouter()
 
 			try {
 				const response = await getTopArtists({ accessToken, ...input });
+				if (!response.ok) {
+					throw new TRPCError({
+						message: `Got ${response.status} response`,
+						code: "INTERNAL_SERVER_ERROR",
+					});
+				}
+
 				const { items } = await response.json();
 
 				return items as Artist[];
 			} catch (e) {
-				return [];
+				console.log(e);
+				return undefined;
 			}
 		},
 	});
