@@ -3,7 +3,7 @@ import { View } from "@/components/ViewSelector";
 import { TimeRange } from "@/lib/spotify";
 import { getFormattedPopularity, getTotalPopularity } from "@/utils/artist";
 import { getFormattedTime, getTotalTime } from "@/utils/tracks";
-import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spinner, Stack } from "@chakra-ui/react";
 import Image from "next/future/image";
 import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
@@ -116,7 +116,8 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 			w="full"
 			justify="space-between"
 			gap={4}
-			flexDir={{ base: "column", sm: "row" }}
+			flexDir={{ base: "column", md: "row" }}
+			align={{ base: "center", md: "flex-start" }}
 		>
 			<Box px={4} maxW="360px" w="full" position="relative" zIndex={99}>
 				<Image
@@ -134,12 +135,21 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 					/>
 				</Box>
 			</Box>
-			<Box flexGrow={1} zIndex={101}>
+			<Stack
+				spacing={4}
+				align="stretch"
+				justify="stretch"
+				flexGrow={1}
+				zIndex={101}
+				w="full"
+				direction={{ base: "column" }}
+			>
 				<ReceiptBackgroundSelector
 					receiptBackground={receiptBackground}
 					setReceiptBackground={setReceiptBackground}
 				/>
-			</Box>
+				<Button w="full">Download Image</Button>
+			</Stack>
 		</Flex>
 	);
 };

@@ -44,15 +44,16 @@ const Receipt: React.FC<ReceiptProps> = ({
 			fontWeight={500}
 			minH="683px"
 		>
-			<Heading as="h1" fontFamily="Kissinger JP" lineHeight={1}>
+			<Text as="h1" fontFamily="Kissinger JP" fontWeight="bold" fontSize="4xl">
 				{SITE_NAME}
-			</Heading>
+			</Text>
 			<Heading
 				as="h3"
 				fontFamily="Kissinger JP"
 				textTransform="uppercase"
 				fontWeight={500}
 				fontSize="lg"
+				lineHeight={1}
 			>
 				Top {itemType} &mdash; {TIME_RANGE_DESCRIPTORS[timeRange]}
 			</Heading>
