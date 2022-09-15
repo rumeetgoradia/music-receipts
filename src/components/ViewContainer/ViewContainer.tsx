@@ -3,11 +3,12 @@ import { View } from "@/components/ViewSelector";
 import { TimeRange } from "@/lib/spotify";
 import { getFormattedPopularity, getTotalPopularity } from "@/utils/artist";
 import { getFormattedTime, getTotalTime } from "@/utils/tracks";
-import { Box, Container, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react";
 import Image from "next/future/image";
 import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
 import { Artist, Track } from "spotify-web-api-ts/types/types/SpotifyObjects";
+import { ReceiptBackgroundSelector } from "../ReceiptBackgroundSelector";
 
 type ViewContainerProps = {
 	currentView: View;
@@ -16,6 +17,7 @@ type ViewContainerProps = {
 	tracks: Track[];
 	artists: Artist[];
 	receiptBackground: StaticImageData | null;
+	setReceiptBackground: (receiptBackground: StaticImageData | null) => void;
 	timeRange: TimeRange;
 };
 const ViewContainer: React.FC<ViewContainerProps> = ({
@@ -25,6 +27,7 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 	tracks,
 	artists,
 	receiptBackground,
+	setReceiptBackground,
 	timeRange,
 }) => {
 	const [receiptItems, setReceiptItems] = useState<ReceiptItem[]>([]);
@@ -109,8 +112,13 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 	}
 
 	return (
-		<Flex w="full" justify="center">
-			<Container maxW="350px" w="full" position="relative" zIndex={99}>
+		<Flex
+			w="full"
+			justify="space-between"
+			gap={4}
+			flexDir={{ base: "column", sm: "row" }}
+		>
+			<Box px={4} maxW="360px" w="full" position="relative" zIndex={99}>
 				<Image
 					src={receiptBackground}
 					placeholder="blur"
@@ -125,7 +133,13 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 						itemType={currentView}
 					/>
 				</Box>
-			</Container>
+			</Box>
+			<Box flexGrow={1} zIndex={101}>
+				<ReceiptBackgroundSelector
+					receiptBackground={receiptBackground}
+					setReceiptBackground={setReceiptBackground}
+				/>
+			</Box>
 		</Flex>
 	);
 };

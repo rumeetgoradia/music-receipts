@@ -1,6 +1,5 @@
 import { Layout } from "@/components/Layout";
 import { Options } from "@/components/Options";
-import { ReceiptBackgroundSelector } from "@/components/ReceiptBackgroundSelector";
 import { ViewContainer } from "@/components/ViewContainer";
 import { View, ViewSelector } from "@/components/ViewSelector";
 import { RECEIPT_BACKGROUNDS } from "@/constants/receipt-backgrounds";
@@ -88,11 +87,9 @@ const Home: NextPage = () => {
 							tracks={tracks || []}
 							artists={artists || []}
 							receiptBackground={receiptBackground}
+							setReceiptBackground={setReceiptBackground}
 							timeRange={timeRange}
 							currentView={currentView}
-						/>
-						<ReceiptBackgroundSelector
-							setReceiptBackground={setReceiptBackground}
 						/>
 					</>
 				) : (

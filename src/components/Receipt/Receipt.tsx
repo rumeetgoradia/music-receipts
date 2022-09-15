@@ -68,6 +68,7 @@ const Receipt: React.FC<ReceiptProps> = ({
 				w="full"
 				fontFamily="Kissinger JP"
 				fontWeight={600}
+				pt={1}
 			>
 				<Text>Order #{checkNumber}</Text>
 				<Text>
@@ -175,7 +176,7 @@ const Receipt: React.FC<ReceiptProps> = ({
 				align="center"
 				flexDir="column"
 				fontFamily="Kissinger JP"
-				pt={1}
+				pt={3}
 				flexGrow={1}
 			>
 				<Text mb={-1} textTransform="uppercase">
@@ -193,14 +194,6 @@ const Receipt: React.FC<ReceiptProps> = ({
 					{SITE_URL.slice(8)}
 				</Text>
 			</Flex>
-			{/* <Heading
-					as="h2"
-					fontFamily="Kissinger JP"
-					fontWeight={400}
-					fontSize="lg"
-				>
-					{SITE_URL.slice(8)}
-				</Heading> */}
 		</VStack>
 	);
 };
