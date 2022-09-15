@@ -1,6 +1,9 @@
 import { Layout } from "@/components/Layout";
 import { Options } from "@/components/Options";
+import { ReceiptBackgroundSelector } from "@/components/ReceiptBackgroundSelector";
+import { ViewContainer } from "@/components/ViewContainer";
 import { View, ViewSelector } from "@/components/ViewSelector";
+import { RECEIPT_BACKGROUNDS } from "@/constants/receipt-backgrounds";
 import {
 	DEFAULT_LIMIT,
 	DEFAULT_TIME_RANGE,
@@ -8,10 +11,10 @@ import {
 	TimeRange,
 } from "@/lib/spotify";
 import { trpc } from "@/utils/trpc";
-import { Box, Flex, Heading, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Heading, VStack } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
-import { Artist, Track } from "spotify-web-api-ts/types/types/SpotifyObjects";
 
 const Home: NextPage = () => {
 	const [currentView, setCurrentView] = useState<View>("tracks");
@@ -20,6 +23,9 @@ const Home: NextPage = () => {
 
 	const [limit, setLimit] = useState<number>(DEFAULT_LIMIT);
 	const [timeRange, setTimeRange] = useState<TimeRange>(DEFAULT_TIME_RANGE);
+
+	const [receiptBackground, setReceiptBackground] =
+		useState<StaticImageData | null>(RECEIPT_BACKGROUNDS[0] || null);
 
 	const {
 		data: tracks,
@@ -75,13 +81,20 @@ const Home: NextPage = () => {
 					setTimeRange={setTimeRange}
 				/>
 				{SpotifyTop.safeParse({ limit, timeRange }).success ? (
-					<ViewContainer
-						isError={isError}
-						isLoading={isLoading}
-						tracks={tracks || []}
-						artists={artists || []}
-						currentView={currentView}
-					/>
+					<>
+						<ViewContainer
+							isError={isError}
+							isLoading={isLoading}
+							tracks={tracks || []}
+							artists={artists || []}
+							receiptBackground={receiptBackground}
+							timeRange={timeRange}
+							currentView={currentView}
+						/>
+						<ReceiptBackgroundSelector
+							setReceiptBackground={setReceiptBackground}
+						/>
+					</>
 				) : (
 					<Box>
 						<Heading fontWeight={300} lineHeight={1.25} fontSize="2xl" mb={4}>
@@ -105,56 +118,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-type ViewContainerProps = {
-	currentView: View;
-	isError: boolean;
-	isLoading: boolean;
-	tracks: Track[];
-	artists: Artist[];
-};
-const ViewContainer: React.FC<ViewContainerProps> = ({
-	currentView,
-	isError,
-	isLoading,
-	tracks,
-	artists,
-}) => {
-	if (isLoading) {
-		return (
-			<Flex w="full" pt="25vh" justify="center" align="center">
-				<Box transform="scale(1.5)">
-					<Spinner size="xl" />
-				</Box>
-			</Flex>
-		);
-	}
-
-	if (isError) {
-		return (
-			<Box>
-				<Heading fontWeight={300} lineHeight={1.25} fontSize="2xl" mb={4}>
-					There was an issue retrieving your data from the server :(
-				</Heading>
-				<Heading
-					as="h2"
-					opacity={0.75}
-					fontWeight={300}
-					lineHeight={1.25}
-					fontSize="xl"
-				>
-					Sorry about that. Please try again later!
-				</Heading>
-			</Box>
-		);
-	}
-
-	return (
-		<Box w="full">
-			{currentView === "tracks" &&
-				tracks.map((track) => <div key={track.name}>{track.name}</div>)}
-			{currentView === "artists" &&
-				artists.map((artist) => <div key={artist.name}>{artist.name}</div>)}
-		</Box>
-	);
-};
