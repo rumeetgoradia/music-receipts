@@ -182,7 +182,7 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 					setReceiptBackground={setReceiptBackground}
 				/>
 				<Button w="full" onClick={downloadReceiptPng} title="Download image">
-					Download image
+					Download
 				</Button>
 			</VStack>
 		</Flex>
