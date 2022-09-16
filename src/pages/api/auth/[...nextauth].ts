@@ -98,6 +98,9 @@ export const authOptions: NextAuthOptions = {
 			authorization: SPOTIFY_AUTHORIZATION_URL,
 		}),
 	],
+	session: {
+		maxAge: 3600,
+	},
 };
 
 export default NextAuth(authOptions);
