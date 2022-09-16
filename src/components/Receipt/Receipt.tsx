@@ -44,22 +44,10 @@ const Receipt: React.FC<ReceiptProps> = ({
 			fontWeight={600}
 			minH="683px"
 		>
-			<Text
-				as="h1"
-				fontFamily="Kissinger JP"
-				fontWeight="bold"
-				fontSize="4xl"
-				letterSpacing="1px"
-			>
+			<Text as="h1" fontWeight="bold" fontSize="4xl" letterSpacing="1px">
 				{SITE_NAME}
 			</Text>
-			<Text
-				as="h3"
-				fontFamily="Kissinger JP"
-				textTransform="uppercase"
-				fontSize="lg"
-				letterSpacing="1px"
-			>
+			<Text as="h3" textTransform="uppercase" fontSize="lg" letterSpacing="1px">
 				Top {itemType} &mdash; {TIME_RANGE_DESCRIPTORS[timeRange]}
 			</Text>
 			<Box
@@ -69,7 +57,7 @@ const Receipt: React.FC<ReceiptProps> = ({
 				borderTop="2px"
 				borderStyle="dashed"
 			/>
-			<Flex justify="space-between" w="full" fontFamily="Kissinger JP" pt={1}>
+			<Flex justify="space-between" w="full" pt={1}>
 				<Text>Order #{checkNumber}</Text>
 				<Text>
 					{currentDate.toLocaleDateString([], {
@@ -88,7 +76,6 @@ const Receipt: React.FC<ReceiptProps> = ({
 			<Flex
 				justify="space-between"
 				w="full"
-				fontFamily="Kissinger JP"
 				textTransform="uppercase"
 				borderBottom="2px"
 				borderTop="2px"
@@ -130,7 +117,6 @@ const Receipt: React.FC<ReceiptProps> = ({
 			<Flex
 				justify="space-between"
 				fontSize="xl"
-				fontFamily="Kissinger JP"
 				w="full"
 				fontWeight={700}
 				borderTop="2px"
@@ -140,18 +126,12 @@ const Receipt: React.FC<ReceiptProps> = ({
 				<Text textTransform="uppercase">Total</Text>
 				<Text>{totalAmount}</Text>
 			</Flex>
-			<Flex
-				justify="space-between"
-				fontFamily="Kissinger JP"
-				w="full"
-				fontWeight={700}
-			>
+			<Flex justify="space-between" w="full" fontWeight={700}>
 				<Text textTransform="uppercase">Item Count</Text>
 				<Text>{items.length}</Text>
 			</Flex>
 			<Text
 				textTransform="uppercase"
-				fontFamily="Kissinger JP"
 				w="full"
 				fontSize="sm"
 				borderTop="2px"
@@ -160,12 +140,7 @@ const Receipt: React.FC<ReceiptProps> = ({
 			>
 				Card #: **** **** **** {cardNumber}
 			</Text>
-			<Text
-				textTransform="uppercase"
-				fontFamily="Kissinger JP"
-				w="full"
-				fontSize="sm"
-			>
+			<Text textTransform="uppercase" w="full" fontSize="sm">
 				Cardholder: {session?.user?.name}
 			</Text>
 
@@ -174,7 +149,6 @@ const Receipt: React.FC<ReceiptProps> = ({
 				justify="flex-end"
 				align="center"
 				flexDir="column"
-				fontFamily="Kissinger JP"
 				pt={3}
 				flexGrow={1}
 			>
