@@ -1,7 +1,7 @@
 import { SITE_NAME, SITE_URL } from "@/constants/seo";
 import { TIME_RANGE_DESCRIPTORS } from "@/constants/timerange";
 import { TimeRange } from "@/lib/spotify";
-import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Barcode from "react-barcode";
 import { View } from "../ViewSelector";
@@ -41,36 +41,35 @@ const Receipt: React.FC<ReceiptProps> = ({
 			color="black !important"
 			fontFamily="Kissinger JP"
 			lineHeight={1}
-			fontWeight={500}
+			fontWeight={600}
 			minH="683px"
 		>
-			<Text as="h1" fontFamily="Kissinger JP" fontWeight="bold" fontSize="4xl">
+			<Text
+				as="h1"
+				fontFamily="Kissinger JP"
+				fontWeight="bold"
+				fontSize="4xl"
+				letterSpacing="1px"
+			>
 				{SITE_NAME}
 			</Text>
-			<Heading
+			<Text
 				as="h3"
 				fontFamily="Kissinger JP"
 				textTransform="uppercase"
-				fontWeight={500}
 				fontSize="lg"
-				lineHeight={1}
+				letterSpacing="1px"
 			>
 				Top {itemType} &mdash; {TIME_RANGE_DESCRIPTORS[timeRange]}
-			</Heading>
+			</Text>
 			<Box
 				w="full"
-				h="4px"
-				borderBottom="1px"
-				borderTop="1px"
+				h="6px"
+				borderBottom="2px"
+				borderTop="2px"
 				borderStyle="dashed"
 			/>
-			<Flex
-				justify="space-between"
-				w="full"
-				fontFamily="Kissinger JP"
-				fontWeight={600}
-				pt={1}
-			>
+			<Flex justify="space-between" w="full" fontFamily="Kissinger JP" pt={1}>
 				<Text>Order #{checkNumber}</Text>
 				<Text>
 					{currentDate.toLocaleDateString([], {
@@ -90,10 +89,9 @@ const Receipt: React.FC<ReceiptProps> = ({
 				justify="space-between"
 				w="full"
 				fontFamily="Kissinger JP"
-				fontWeight={600}
 				textTransform="uppercase"
-				borderBottom="1px"
-				borderTop="1px"
+				borderBottom="2px"
+				borderTop="2px"
 				py={1}
 				borderStyle="dashed"
 			>
@@ -134,8 +132,8 @@ const Receipt: React.FC<ReceiptProps> = ({
 				fontSize="xl"
 				fontFamily="Kissinger JP"
 				w="full"
-				fontWeight={600}
-				borderTop="1px"
+				fontWeight={700}
+				borderTop="2px"
 				borderStyle="dashed"
 				pt={2}
 			>
@@ -146,7 +144,7 @@ const Receipt: React.FC<ReceiptProps> = ({
 				justify="space-between"
 				fontFamily="Kissinger JP"
 				w="full"
-				fontWeight={600}
+				fontWeight={700}
 			>
 				<Text textTransform="uppercase">Item Count</Text>
 				<Text>{items.length}</Text>
@@ -156,7 +154,7 @@ const Receipt: React.FC<ReceiptProps> = ({
 				fontFamily="Kissinger JP"
 				w="full"
 				fontSize="sm"
-				borderTop="1px"
+				borderTop="2px"
 				borderStyle="dashed"
 				pt={2}
 			>
