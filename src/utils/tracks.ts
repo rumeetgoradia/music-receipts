@@ -17,7 +17,7 @@ export const getTotalTime = (tracks: Track[]): string => {
 	const minutes = Math.floor(millis / 60000) % 60;
 	const seconds = Math.round((millis % 60000) / 1000);
 
-	return `${hours > 0 ? hours + ":" : ""}${minutes < 10 ? "0" : ""}${minutes}:${
-		seconds < 10 ? "0" : ""
-	}${seconds.toFixed(0)}`;
+	return `${hours > 0 ? hours + ":" : ""}${
+		minutes < 10 && hours > 0 ? "0" : ""
+	}${minutes}:${seconds < 10 ? "0" : ""}${seconds.toFixed(0)}`;
 };

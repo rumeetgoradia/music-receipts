@@ -114,11 +114,15 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 	return (
 		<Flex w="full" justify="center">
 			<VStack w="full" spacing={4} maxW="360px">
-				<Box px={4} w="full" position="relative" zIndex={99}>
+				<Box px={6} w="full" position="relative" zIndex={99}>
 					<Image
 						src={receiptBackground}
 						placeholder="blur"
 						fill
+						style={{
+							objectFit: "cover",
+							objectPosition: "center center",
+						}}
 						alt="Receipt background"
 					/>
 					<Box position="relative" zIndex={100}>
