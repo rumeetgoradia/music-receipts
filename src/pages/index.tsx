@@ -68,7 +68,7 @@ const Home: NextPage = () => {
 
 	return (
 		<Layout>
-			<VStack spacing={8} align="flex-start">
+			<VStack spacing={6} align="flex-start">
 				<ViewSelector
 					currentView={currentView}
 					setCurrentView={setCurrentView}
