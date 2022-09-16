@@ -3,7 +3,7 @@ import { View } from "@/components/ViewSelector";
 import { TimeRange } from "@/lib/spotify";
 import { getFormattedPopularity, getTotalPopularity } from "@/utils/artist";
 import { getFormattedTime, getTotalTime } from "@/utils/tracks";
-import { Box, Button, Flex, Heading, Spinner, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spinner, VStack } from "@chakra-ui/react";
 import Image from "next/future/image";
 import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
@@ -112,44 +112,31 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 	}
 
 	return (
-		<Flex
-			w="full"
-			justify="space-between"
-			gap={4}
-			flexDir={{ base: "column", md: "row" }}
-			align={{ base: "center", md: "flex-start" }}
-		>
-			<Box px={4} maxW="360px" w="full" position="relative" zIndex={99}>
-				<Image
-					src={receiptBackground}
-					placeholder="blur"
-					fill
-					alt="Receipt background"
-				/>
-				<Box position="relative" zIndex={100}>
-					<Receipt
-						timeRange={timeRange}
-						items={receiptItems}
-						totalAmount={totalAmount}
-						itemType={currentView}
+		<Flex w="full" justify="center">
+			<VStack w="full" spacing={4} maxW="360px">
+				<Box px={4} w="full" position="relative" zIndex={99}>
+					<Image
+						src={receiptBackground}
+						placeholder="blur"
+						fill
+						alt="Receipt background"
 					/>
+					<Box position="relative" zIndex={100}>
+						<Receipt
+							timeRange={timeRange}
+							items={receiptItems}
+							totalAmount={totalAmount}
+							itemType={currentView}
+						/>
+					</Box>
 				</Box>
-			</Box>
-			<Stack
-				spacing={4}
-				align="stretch"
-				justify="stretch"
-				flexGrow={1}
-				zIndex={101}
-				w="full"
-				direction={{ base: "column" }}
-			>
+
 				<ReceiptBackgroundSelector
 					receiptBackground={receiptBackground}
 					setReceiptBackground={setReceiptBackground}
 				/>
 				<Button w="full">Download Image</Button>
-			</Stack>
+			</VStack>
 		</Flex>
 	);
 };
