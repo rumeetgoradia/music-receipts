@@ -6,6 +6,7 @@ import { getFormattedTime, getTotalTime } from "@/utils/track";
 import { Box, Button, Flex, Heading, Spinner, VStack } from "@chakra-ui/react";
 import download from "downloadjs";
 import { toPng } from "html-to-image";
+import { signOut } from "next-auth/react";
 import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
 import { Artist, Track } from "spotify-web-api-ts/types/types/SpotifyObjects";
@@ -34,6 +35,8 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 	const [receiptItems, setReceiptItems] = useState<ReceiptItem[]>([]);
 	const [totalAmount, setTotalAmount] = useState<string>("");
 
+	const [downloadIsLoading, setDownloadIsLoading] = useState<boolean>(false);
+
 	const convertDivToImg = async (node: HTMLElement) => {
 		const scale = 1;
 
@@ -55,23 +58,30 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 		return data;
 	};
 
-	const downloadReceiptPng = async () => {
+	const downloadReceipt = async () => {
 		try {
 			const receiptRef = document.getElementById("receipt");
 			if (!receiptRef) {
 				return;
 			}
 
-			const data = await convertDivToImg(receiptRef);
-			if (data) {
-				download(
-					data,
-					`melodeipt-${new Date()
-						.toLocaleDateString()
-						.replaceAll("/", "-")}.png`,
-					"image/png"
-				);
-			}
+			setDownloadIsLoading(true);
+			convertDivToImg(receiptRef).then(() =>
+				convertDivToImg(receiptRef).then(() =>
+					convertDivToImg(receiptRef).then((data) => {
+						if (data) {
+							download(
+								data,
+								`melodeipt-${new Date()
+									.toLocaleDateString()
+									.replaceAll("/", "-")}.png`,
+								"image/png"
+							);
+						}
+						setDownloadIsLoading(false);
+					})
+				)
+			);
 		} catch (e) {
 			console.log(e);
 		}
@@ -118,6 +128,7 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 	}
 
 	if (isError) {
+		signOut();
 		return (
 			<Box>
 				<Heading fontWeight={300} lineHeight={1.25} fontSize="2xl" mb={4}>
@@ -181,7 +192,12 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 					receiptBackground={receiptBackground}
 					setReceiptBackground={setReceiptBackground}
 				/>
-				<Button w="full" onClick={downloadReceiptPng} title="Download image">
+				<Button
+					w="full"
+					onClick={downloadReceipt}
+					title="Download"
+					isLoading={downloadIsLoading}
+				>
 					Download
 				</Button>
 			</VStack>
