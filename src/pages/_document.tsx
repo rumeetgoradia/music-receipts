@@ -13,6 +13,20 @@ class MyDocument extends Document {
 						crossOrigin="anonymous"
 					/>
 					<link
+						rel="preload"
+						href="fonts/KissingerJp.woff2"
+						as="font"
+						type="font/woff2"
+						crossOrigin="anonymous"
+					/>
+					<link
+						rel="preload"
+						href="fonts/KissingerJp.ttf"
+						as="font"
+						type="font/ttf"
+						crossOrigin="anonymous"
+					/>
+					<link
 						rel="apple-touch-icon"
 						sizes="180x180"
 						href="/favicons/apple-touch-icon.png"

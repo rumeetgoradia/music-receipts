@@ -1,3 +1,4 @@
+import { TIME_RANGE_DESCRIPTORS } from "@/constants/timerange";
 import { TimeRange } from "@/lib/spotify";
 import {
 	Box,
@@ -37,6 +38,10 @@ const Options: React.FC<OptionsProps> = ({
 					value={limit}
 					onChange={(value) => {
 						const intValue = parseInt(value);
+						if (isNaN(intValue)) {
+							setLimit(0);
+							return;
+						}
 						setLimit(intValue < 1 ? 1 : intValue > 50 ? 50 : intValue);
 					}}
 				>
@@ -66,9 +71,13 @@ const Options: React.FC<OptionsProps> = ({
 						setTimeRange(value as TimeRange);
 					}}
 				>
-					<option value="short">Last month</option>
-					<option value="medium">Last 6 months</option>
-					<option value="long">All time</option>
+					{Object.entries(TIME_RANGE_DESCRIPTORS).map(([key, value]) => {
+						return (
+							<option value={key} key={key}>
+								{value}
+							</option>
+						);
+					})}
 				</Select>
 			</FormControl>
 		</Flex>
