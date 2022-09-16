@@ -8,20 +8,23 @@ import theme, { Fonts } from "@/styles/theme";
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { loggerLink } from "@trpc/client/links/loggerLink";
 import { withTRPC } from "@trpc/next";
+import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { DefaultSeo } from "next-seo";
 import SeoProps from "next-seo.config";
-import type { AppType } from "next/dist/shared/lib/utils";
+import { AppProps } from "next/app";
 import superjson from "superjson";
 
-const MyApp: AppType = ({
-	Component,
-	pageProps: { session, ...pageProps },
-}) => {
+function MyApp(appProps: AppProps<{ session: Session; cookies: string }>) {
+	const {
+		Component,
+		pageProps: { session, cookies, ...pageProps },
+	} = appProps;
+
 	return (
 		<SessionProvider session={session}>
 			<DefaultSeo {...SeoProps} />
-			<Chakra cookies={pageProps.cookies} theme={theme}>
+			<Chakra cookies={cookies} theme={theme}>
 				<Fonts />
 				<Navbar />
 				<Component {...pageProps} />
@@ -29,7 +32,7 @@ const MyApp: AppType = ({
 			</Chakra>
 		</SessionProvider>
 	);
-};
+}
 
 const getBaseUrl = () => {
 	if (typeof window !== "undefined") return ""; // browser should use relative url
