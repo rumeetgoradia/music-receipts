@@ -1,4 +1,4 @@
-const siteUrl = "https://www.music-receipts.rumeetgoradia.com";
+const siteUrl = "https://www.melodeipts.rumeetgoradia.com";
 
 module.exports = {
 	siteUrl,
