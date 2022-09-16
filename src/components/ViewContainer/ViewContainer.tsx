@@ -2,9 +2,10 @@ import { Receipt, ReceiptItem } from "@/components/Receipt";
 import { View } from "@/components/ViewSelector";
 import { TimeRange } from "@/lib/spotify";
 import { getFormattedPopularity, getTotalPopularity } from "@/utils/artist";
-import { getFormattedTime, getTotalTime } from "@/utils/tracks";
+import { getFormattedTime, getTotalTime } from "@/utils/track";
 import { Box, Button, Flex, Heading, Spinner, VStack } from "@chakra-ui/react";
-import Image from "next/future/image";
+import download from "downloadjs";
+import { toPng } from "html-to-image";
 import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
 import { Artist, Track } from "spotify-web-api-ts/types/types/SpotifyObjects";
@@ -32,6 +33,49 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 }) => {
 	const [receiptItems, setReceiptItems] = useState<ReceiptItem[]>([]);
 	const [totalAmount, setTotalAmount] = useState<string>("");
+
+	const convertDivToImg = async (node: HTMLElement) => {
+		const scale = 1;
+
+		const style = {
+			transform: "scale(" + scale + ")",
+			"transform-origin": "top left",
+			width: node.offsetWidth + "px",
+			height: node.offsetHeight + "px",
+		};
+
+		const param = {
+			cacheBust: true,
+			height: node.offsetHeight * scale,
+			width: node.offsetWidth * scale,
+			style,
+		};
+
+		const data = await toPng(node, param);
+		return data;
+	};
+
+	const downloadReceiptPng = async () => {
+		try {
+			const receiptRef = document.getElementById("receipt");
+			if (!receiptRef) {
+				return;
+			}
+
+			const data = await convertDivToImg(receiptRef);
+			if (data) {
+				download(
+					data,
+					`melodeipt-${new Date()
+						.toLocaleDateString()
+						.replaceAll("/", "-")}.png`,
+					"image/png"
+				);
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
 	useEffect(() => {
 		const newReceiptItems: ReceiptItem[] = [];
@@ -114,17 +158,16 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 	return (
 		<Flex w="full" justify="center">
 			<VStack w="full" spacing={4} maxW="360px">
-				<Box px={6} w="full" position="relative" zIndex={99}>
-					<Image
-						src={receiptBackground}
-						placeholder="blur"
-						fill
-						style={{
-							objectFit: "cover",
-							objectPosition: "center center",
-						}}
-						alt="Receipt background"
-					/>
+				<Box
+					px={6}
+					w="full"
+					position="relative"
+					zIndex={99}
+					id="receipt"
+					bgImage={receiptBackground.src}
+					bgSize="cover"
+					bgPos="center center"
+				>
 					<Box position="relative" zIndex={100}>
 						<Receipt
 							timeRange={timeRange}
@@ -134,12 +177,13 @@ const ViewContainer: React.FC<ViewContainerProps> = ({
 						/>
 					</Box>
 				</Box>
-
 				<ReceiptBackgroundSelector
 					receiptBackground={receiptBackground}
 					setReceiptBackground={setReceiptBackground}
 				/>
-				<Button w="full">Download Image</Button>
+				<Button w="full" onClick={downloadReceiptPng} title="Download image">
+					Download image
+				</Button>
 			</VStack>
 		</Flex>
 	);

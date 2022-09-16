@@ -5,10 +5,11 @@ import { SignInRequired } from "../SignInRequired";
 
 type LayoutProps = {
 	title?: string;
+	unprotected?: boolean;
 	children: React.ReactNode;
 };
 
-const Layout: React.FC<LayoutProps> = ({ children, title }) => {
+const Layout: React.FC<LayoutProps> = ({ children, unprotected, title }) => {
 	const { status } = useSession();
 	return (
 		<>
@@ -21,7 +22,11 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
 				h="full"
 				position="relative"
 			>
-				{status !== "authenticated" ? <SignInRequired /> : children}
+				{status !== "authenticated" && !unprotected ? (
+					<SignInRequired />
+				) : (
+					children
+				)}
 			</Container>
 		</>
 	);

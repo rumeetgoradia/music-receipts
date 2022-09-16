@@ -8,7 +8,7 @@ import {
 	Link as Anchor,
 } from "@chakra-ui/react";
 import fade from "color-alpha";
-import { signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 const Navbar: React.FC = ({}) => {
@@ -22,17 +22,13 @@ const Navbar: React.FC = ({}) => {
 			justify="center"
 			w="full"
 			borderBottom="1px"
-			borderBottomColor={
-				status === "authenticated" ? "gray.700" : "transparent"
-			}
+			borderBottomColor="gray.700"
 			position="fixed"
 			zIndex="banner"
 			top={0}
 			left={0}
 			bg={fade(backgroundColor, 0.9)}
-			backdropFilter={
-				status === "authenticated" ? "saturate(180%) blur(5px)" : "none"
-			}
+			backdropFilter="saturate(180%) blur(5px)"
 			sx={{
 				"@supports not (backdrop-filter: none)": {
 					backdropFilter: "none",
@@ -41,18 +37,12 @@ const Navbar: React.FC = ({}) => {
 			}}
 		>
 			<Container maxW="container.md" py={2}>
-				<Flex
-					justify={status === "authenticated" ? "space-between" : "center"}
-					align="center"
-					w="full"
-				>
+				<Flex justify={"space-between"} align="center" w="full">
 					<Link href="/" passHref>
 						<Anchor
 							fontWeight={300}
 							title={SITE_NAME}
-							fontSize={
-								status === "authenticated" ? { base: "2xl", sm: "3xl" } : "4xl"
-							}
+							fontSize={{ base: "2xl", sm: "3xl" }}
 							color="brand.900"
 							textDecoration="none !important"
 							_hover={{ transform: "scale(1.025)" }}
@@ -62,24 +52,35 @@ const Navbar: React.FC = ({}) => {
 							melodeipts
 						</Anchor>
 					</Link>
-					{status === "authenticated" && (
-						<HStack spacing={4}>
-							<Link passHref href="/about">
-								<Button as="a" variant="link" title="About">
-									About
-								</Button>
-							</Link>
+
+					<HStack spacing={4}>
+						<Link passHref href="/about">
 							<Button
 								as="a"
 								variant="link"
-								cursor="pointer"
-								title="Sign out"
-								onClick={() => signOut()}
+								title="About"
+								size="sm"
+								fontWeight={500}
+								textTransform="uppercase"
 							>
-								Sign Out
+								About
 							</Button>
-						</HStack>
-					)}
+						</Link>
+
+						<Button
+							variant="link"
+							cursor="pointer"
+							size="sm"
+							fontWeight={500}
+							textTransform="uppercase"
+							title={status === "authenticated" ? "Sign out" : "Sign in"}
+							onClick={() =>
+								status === "authenticated" ? signOut() : signIn("spotify")
+							}
+						>
+							Sign {status === "authenticated" ? "out" : "in"}
+						</Button>
+					</HStack>
 				</Flex>
 			</Container>
 		</Flex>

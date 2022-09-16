@@ -1,4 +1,5 @@
 import { Artist } from "spotify-web-api-ts/types/types/SpotifyObjects";
+
 export const getFormattedPopularity = (artist: Artist): string => {
 	return calculatePopularity(artist.popularity, artist.genres.length).toFixed(
 		2
